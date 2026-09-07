@@ -10,5 +10,7 @@ public interface NotificationService {
 
     List<NotificationDto> getNotificationsByUser(Long userId);
 
+    List<NotificationDto> getAllNotifications();
+
     NotificationDto markAsRead(Long notificationId);
 }

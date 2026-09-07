@@ -21,7 +21,10 @@ public class NotificationController {
     private final NotificationService notificationService;
 
 
-    // Create Notification
+    // =========================================
+    // CREATE NOTIFICATION
+    // =========================================
+
     @PostMapping
     public ResponseEntity<NotificationDto> createNotification(
             @Valid @RequestBody NotificationDto notificationDto) {
@@ -36,7 +39,25 @@ public class NotificationController {
     }
 
 
-    // Get notifications of a particular user
+    // =========================================
+    // GET ALL NOTIFICATIONS
+    // Used by Admin
+    // =========================================
+
+    @GetMapping
+    public ResponseEntity<List<NotificationDto>> getAllNotifications() {
+
+        return ResponseEntity.ok(
+                notificationService.getAllNotifications()
+        );
+    }
+
+
+    // =========================================
+    // GET NOTIFICATIONS BY USER
+    // Used by Citizen
+    // =========================================
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<NotificationDto>> getNotificationsByUser(
             @PathVariable Long userId) {
@@ -47,7 +68,10 @@ public class NotificationController {
     }
 
 
-    // Mark notification as read
+    // =========================================
+    // MARK NOTIFICATION AS READ
+    // =========================================
+
     @PutMapping("/{id}/read")
     public ResponseEntity<NotificationDto> markAsRead(
             @PathVariable Long id) {

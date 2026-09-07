@@ -21,7 +21,9 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
-
+    // =========================================
+    // CREATE NOTIFICATION
+    // =========================================
     @Override
     public NotificationDto createNotification(
             NotificationDto notificationDto) {
@@ -29,14 +31,11 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = new Notification();
 
         notification.setTitle(notificationDto.getTitle());
-
         notification.setMessage(notificationDto.getMessage());
-
         notification.setRead(false);
-
         notification.setCreatedAt(LocalDateTime.now());
 
-
+        // Assign notification to a specific user
         if (notificationDto.getUserId() != null) {
 
             User user = userRepository
@@ -48,14 +47,16 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setUser(user);
         }
 
-
         Notification saved =
                 notificationRepository.save(notification);
 
         return convertToDto(saved);
     }
 
-
+    // =========================================
+    // GET NOTIFICATIONS BY USER
+    // Used by Citizen
+    // =========================================
     @Override
     public List<NotificationDto> getNotificationsByUser(
             Long userId) {
@@ -67,7 +68,23 @@ public class NotificationServiceImpl implements NotificationService {
                 .collect(Collectors.toList());
     }
 
+    // =========================================
+    // GET ALL NOTIFICATIONS
+    // Used by Admin
+    // =========================================
+    @Override
+    public List<NotificationDto> getAllNotifications() {
 
+        return notificationRepository
+                .findAll()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    // =========================================
+    // MARK NOTIFICATION AS READ
+    // =========================================
     @Override
     public NotificationDto markAsRead(
             Long notificationId) {
@@ -89,12 +106,13 @@ public class NotificationServiceImpl implements NotificationService {
         return convertToDto(updated);
     }
 
-
+    // =========================================
+    // ENTITY → DTO
+    // =========================================
     private NotificationDto convertToDto(
             Notification notification) {
 
-        NotificationDto dto =
-                new NotificationDto();
+        NotificationDto dto = new NotificationDto();
 
         dto.setNotificationId(
                 notification.getNotificationId()
@@ -116,11 +134,12 @@ public class NotificationServiceImpl implements NotificationService {
                 notification.getCreatedAt()
         );
 
-
         if (notification.getUser() != null) {
 
             dto.setUserId(
-                    notification.getUser().getUserid()
+                    notification
+                            .getUser()
+                            .getUserid()
             );
         }
 

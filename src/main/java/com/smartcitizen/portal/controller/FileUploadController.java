@@ -36,9 +36,7 @@ public class FileUploadController {
     private String uploadDir;
 
 
-    // =========================================================
-    // UPLOAD FILE
-    // =========================================================
+    
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadFile(
@@ -71,9 +69,7 @@ public class FileUploadController {
     }
 
 
-    // =========================================================
-    // VIEW / DOWNLOAD FILE
-    // =========================================================
+    
 
     @GetMapping("/view/{filename:.+}")
     public ResponseEntity<Resource> viewFile(
