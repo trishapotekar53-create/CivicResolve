@@ -16,9 +16,12 @@ public class CorsConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // React frontend
+        // Allow local React frontend and deployed Vercel frontend
         configuration.setAllowedOrigins(
-                List.of("http://localhost:3000")
+                List.of(
+                        "http://localhost:3000",
+                        "https://civic-resolve-frontend.vercel.app"
+                )
         );
 
         configuration.setAllowedMethods(
