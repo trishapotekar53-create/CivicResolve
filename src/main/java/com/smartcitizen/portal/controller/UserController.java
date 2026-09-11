@@ -24,11 +24,15 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://civic-resolve-frontend.vercel.app"
+})
 public class UserController {
 
     @Autowired
     private UserService userService;
+
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(
             @Valid @RequestBody UserDto userDto) {
@@ -40,6 +44,7 @@ public class UserController {
                 HttpStatus.CREATED
         );
     }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> loginUser(
             @Valid @RequestBody LoginDto loginDto) {
@@ -50,13 +55,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-   @GetMapping
+    @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
 
         return ResponseEntity.ok(
                 userService.getAllUsers()
         );
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(
             @PathVariable Long id) {
@@ -65,6 +71,7 @@ public class UserController {
                 userService.getUserById(id)
         );
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
             @PathVariable Long id,
@@ -77,6 +84,7 @@ public class UserController {
                 )
         );
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(
             @PathVariable Long id) {
